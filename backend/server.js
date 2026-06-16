@@ -1,9 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const tarefasRouter = require('./routes/tasks');
 
 const app = express();
+
+// precisava disso pra funcionar no celular
+app.use(cors());
 app.use(express.json());
 
 // conectando no mongodb atlas
