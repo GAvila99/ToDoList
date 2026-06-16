@@ -51,6 +51,37 @@ export default function App() {
     }
   };
 
+  const deletarTarefa = async (id) => {
+    try {
+      await fetch(API_URL + '/tarefas/' + id, {
+        method: 'DELETE'
+      });
+      const novaLista = tarefas.filter((t) => t._id !== id);
+      setTarefas(novaLista);
+    } catch (erro) {
+      console.log('Erro ao deletar:', erro);
+    }
+  };
+
+  const alternarConcluida = async (tarefa) => {
+    try {
+      const resposta = await fetch(API_URL + '/tarefas/' + tarefa._id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ concluida: !tarefa.concluida })
+      });
+      const tarefaAtualizada = await resposta.json();
+      const novaLista = tarefas.map((t) =>
+        t._id === tarefa._id ? tarefaAtualizada : t
+      );
+      setTarefas(novaLista);
+    } catch (erro) {
+      console.log('Erro ao atualizar:', erro);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Minhas Tarefas</Text>
@@ -75,7 +106,23 @@ export default function App() {
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => (
             <View style={styles.itemTarefa}>
-              <Text>{item.titulo}</Text>
+              <TouchableOpacity
+                style={styles.checkBotao}
+                onPress={() => alternarConcluida(item)}
+              >
+                <Text style={styles.checkTexto}>
+                  {item.concluida ? '✓' : '○'}
+                </Text>
+              </TouchableOpacity>
+
+              <Text style={styles.tituloTarefa}>{item.titulo}</Text>
+
+              <TouchableOpacity
+                style={styles.botaoDeletar}
+                onPress={() => deletarTarefa(item._id)}
+              >
+                <Text style={styles.deletarTexto}>X</Text>
+              </TouchableOpacity>
             </View>
           )}
         />
@@ -122,8 +169,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   itemTarefa: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#eee'
+  },
+  checkBotao: {
+    marginRight: 10
+  },
+  checkTexto: {
+    fontSize: 18,
+    color: '#4CAF50'
+  },
+  tituloTarefa: {
+    flex: 1,
+    fontSize: 16
+  },
+  botaoDeletar: {
+    backgroundColor: '#e53935',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    paddingVertical: 5
+  },
+  deletarTexto: {
+    color: '#fff',
+    fontWeight: 'bold'
   }
 });
