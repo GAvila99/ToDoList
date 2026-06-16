@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const tarefasRouter = require('./routes/tasks');
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,8 @@ mongoose.connect(process.env.MONGO_URI)
   .catch((erro) => {
     console.log('Erro ao conectar no banco:', erro);
   });
+
+app.use('/tarefas', tarefasRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
