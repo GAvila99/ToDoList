@@ -33,7 +33,7 @@ export default function App() {
     if (novaTarefa.trim() === '') return;
     try {
       const resposta = await fetch(API_URL + '/tarefas', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
