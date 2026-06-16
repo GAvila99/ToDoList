@@ -29,6 +29,24 @@ export default function App() {
     }
   };
 
+  const adicionarTarefa = async () => {
+    if (novaTarefa.trim() === '') return;
+    try {
+      const resposta = await fetch(API_URL + '/tarefas', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ titulo: novaTarefa })
+      });
+      const tarefaCriada = await resposta.json();
+      setTarefas([...tarefas, tarefaCriada]);
+      setNovaTarefa('');
+    } catch (erro) {
+      console.log('Erro ao adicionar tarefa:', erro);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Minhas Tarefas</Text>
@@ -40,7 +58,7 @@ export default function App() {
           value={novaTarefa}
           onChangeText={setNovaTarefa}
         />
-        <TouchableOpacity style={styles.botaoAdicionar}>
+        <TouchableOpacity style={styles.botaoAdicionar} onPress={adicionarTarefa}>
           <Text style={styles.botaoTexto}>+</Text>
         </TouchableOpacity>
       </View>
