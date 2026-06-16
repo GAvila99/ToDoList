@@ -115,7 +115,14 @@ export default function App() {
                 </Text>
               </TouchableOpacity>
 
-              <Text style={styles.tituloTarefa}>{item.titulo}</Text>
+              <Text
+                style={[
+                  styles.tituloTarefa,
+                  item.concluida && styles.tarefaConcluida
+                ]}
+              >
+                {item.titulo}
+              </Text>
 
               <TouchableOpacity
                 style={styles.botaoDeletar}
@@ -134,66 +141,76 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
     paddingTop: 60,
     paddingHorizontal: 20
   },
   titulo: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20
+    marginBottom: 24,
+    color: '#333'
   },
   inputContainer: {
     flexDirection: 'row',
-    marginBottom: 20
+    marginBottom: 24
   },
   input: {
     flex: 1,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginRight: 10
+    borderRadius: 8,
+    padding: 12,
+    marginRight: 10,
+    backgroundColor: '#fff',
+    fontSize: 16
   },
   botaoAdicionar: {
     backgroundColor: '#4CAF50',
-    padding: 10,
-    borderRadius: 5,
+    paddingHorizontal: 16,
+    borderRadius: 8,
     justifyContent: 'center',
-    alignItems: 'center',
-    width: 45
+    alignItems: 'center'
   },
   botaoTexto: {
     color: '#fff',
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: 'bold'
   },
   itemTarefa: {
     flexDirection: 'row',
     alignItems: 'center',
+    backgroundColor: '#fff',
     padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee'
+    borderRadius: 8,
+    marginBottom: 10,
+    elevation: 2
   },
   checkBotao: {
-    marginRight: 10
+    marginRight: 12
   },
   checkTexto: {
-    fontSize: 18,
+    fontSize: 20,
     color: '#4CAF50'
   },
   tituloTarefa: {
     flex: 1,
-    fontSize: 16
+    fontSize: 16,
+    color: '#333'
+  },
+  tarefaConcluida: {
+    textDecorationLine: 'line-through',
+    color: '#aaa'
   },
   botaoDeletar: {
     backgroundColor: '#e53935',
-    borderRadius: 5,
+    borderRadius: 6,
     paddingHorizontal: 10,
-    paddingVertical: 5
+    paddingVertical: 6
   },
   deletarTexto: {
     color: '#fff',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 13
   }
 });
