@@ -26,13 +26,16 @@ router.post('/', async (req, res) => {
 });
 
 // atualizar tarefa (marcar como concluida)
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const tarefa = await Task.findByIdAndUpdate(
       req.params.id,
       { concluida: req.body.concluida },
       { new: true }
     );
+    if (!tarefa) {
+      return res.status(404).json({ mensagem: 'Tarefa nao encontrada' });
+    }
     res.json(tarefa);
   } catch (erro) {
     res.status(500).json({ mensagem: 'Erro ao atualizar tarefa' });
