@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,9 +8,26 @@ import {
   FlatList
 } from 'react-native';
 
+// ip hardcoded - mudar se mudar de rede
+const API_URL = 'http://192.168.1.100:3000';
+
 export default function App() {
   const [novaTarefa, setNovaTarefa] = useState('');
   const [tarefas, setTarefas] = useState([]);
+
+  useEffect(() => {
+    buscarTarefas();
+  }, []);
+
+  const buscarTarefas = async () => {
+    try {
+      const resposta = await fetch(API_URL + '/tarefas');
+      const dados = await resposta.json();
+      setTarefas(dados);
+    } catch (erro) {
+      console.log('Erro ao buscar tarefas:', erro);
+    }
+  };
 
   return (
     <View style={styles.container}>
