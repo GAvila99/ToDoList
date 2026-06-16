@@ -5,7 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  ActivityIndicator
 } from 'react-native';
 
 // ip hardcoded - mudar se mudar de rede
@@ -14,6 +15,7 @@ const API_URL = 'http://192.168.1.100:3000';
 export default function App() {
   const [novaTarefa, setNovaTarefa] = useState('');
   const [tarefas, setTarefas] = useState([]);
+  const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
     buscarTarefas();
@@ -26,6 +28,8 @@ export default function App() {
       setTarefas(dados);
     } catch (erro) {
       console.log('Erro ao buscar tarefas:', erro);
+    } finally {
+      setCarregando(false);
     }
   };
 
@@ -63,15 +67,19 @@ export default function App() {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={tarefas}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => (
-          <View style={styles.itemTarefa}>
-            <Text>{item.titulo}</Text>
-          </View>
-        )}
-      />
+      {carregando ? (
+        <ActivityIndicator size="large" color="#4CAF50" />
+      ) : (
+        <FlatList
+          data={tarefas}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => (
+            <View style={styles.itemTarefa}>
+              <Text>{item.titulo}</Text>
+            </View>
+          )}
+        />
+      )}
     </View>
   );
 }
